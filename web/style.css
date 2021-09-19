@@ -1,8 +1,31 @@
-.origin{
-    width: 300px;
-    height: 400px;
+:root{
+    --font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, "游ゴシック体", "Yu Gothic", YuGothic, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
-.trans-log-area{
+
+body {
+    font-family: var(--font-family-sans-serif);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-sans-serif);
+}
+
+.btn {
+    border-radius: 2px;
+}
+
+.header_wrapper {
+    color: #fff;
+    background-color: #76c7c0;
+    font-weight: bold;
+}
+
+.title {
+    font-weight: bold;
+}
+
+textarea.com_log_area{
     width: 300px;
     height: 400px;
 }
