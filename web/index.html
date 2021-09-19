@@ -30,29 +30,7 @@
             </div>
         </div>
         <script type="text/javascript" src="./eel.js"></script>
-        <script type="text/javascript">
-            // スクレイピング関数
-            async function selenium_func(kw_search, csv_name, box_name) {
-                let val = await eel.job_system(kw_search, csv_name, box_name)();
-                document.getElementById('tlog').value = val + "\n";
-            }
-            let search = document.getElementById('search')
-            search.addEventListener('click', () => {
-                if (input_form.input_kw.value == "") {
-                    alert("キーワードを入力してください");
-                    return false;
-                }else if(input_form.input_f.value == ""){
-                    alert("ファイル名を入力してください");
-                    return false;
-                }else if(input_form.input_d.value == ""){
-                    alert("フォルダ名を入力してください");
-                    return false;
-                }else {
-                    selenium_func(kw_search.value, csv_name.value, box_name.value);
-                    return true;
-                }
-            })
-        </script>
+        <script src="script.js" charset="utf-8"></script>
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

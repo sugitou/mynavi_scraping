@@ -8,7 +8,14 @@ import pandas as pd
 
 # 現在時刻取得
 now = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-log_path = f'log/log_{now}.log'
+
+
+def crdir(fdname):
+    new_dir = f'{os.getcwd()}\\{fdname}'
+    # 指定ディレクトリ作成
+    if not os.path.exists(new_dir):
+        os.mkdir(new_dir)
+    return new_dir
 
 
 def find_table_target_word(th_elms, td_elms, target:str):
@@ -18,7 +25,7 @@ def find_table_target_word(th_elms, td_elms, target:str):
             return td_elm.text
 
 
-def logfile(log_text):
+def logfile(log_path, log_text):
     with open(log_path, 'a', encoding='utf-8_sig') as f:
         # 件数ごとに出力時間を記載する
         log_now = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
@@ -56,10 +63,14 @@ def main(search_keyword, csv_name, box_name):
 
     # 検索窓を使わずに検索
     no_search_window(driver, search_keyword)
+    # ログファイル作成
+    log_path = f'{crdir("log")}/log_{now}.log'
     # 空のDataFrame作成
     df = pd.DataFrame()
     # 件数カウンター作成
     job_num = 0
+
+    comp_list = []
     
     while True:
         try:  
@@ -78,7 +89,7 @@ def main(search_keyword, csv_name, box_name):
                 # 件数をカウント
                 job_num += 1
                 out_num = f'{job_num}件目'
-                logfile(out_num)
+                logfile(log_path, out_num)
 
                 # DataFrameに対して辞書形式でデータを追加する
                 df = df.append(
@@ -87,6 +98,8 @@ def main(search_keyword, csv_name, box_name):
                     "初年度年収": first_year_fee,
                     "掲載終了予定日": end.text}, 
                     ignore_index=True)
+                
+                comp_list.append(name.text + '\n')
                     
             # 次のページ情報を取得
             next_page = driver.find_elements_by_class_name("iconFont--arrowLeft")
@@ -99,15 +112,16 @@ def main(search_keyword, csv_name, box_name):
                 break
         except Exception as e:
             er = f'{job_num}件目でエラーが発生しました。'
-            logfile(er)
+            logfile(log_path, er)
             print(e)
             continue
         
-    csv_path = f'{box_name}/{csv_name}.csv'
+    csv_path = f'{crdir(box_name)}/{csv_name}.csv'
     # csvファイルに取得データを出力
     df.to_csv(csv_path)
+    driver.close()
 
-    return "終了"
+    return comp_list
 
 # 直接起動された場合はmain()を起動(モジュールとして呼び出された場合は起動しないようにするため)
 # if __name__ == "__main__":
